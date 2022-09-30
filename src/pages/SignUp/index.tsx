@@ -16,16 +16,15 @@ export default function SignUp() {
   const [lastName, setLastName] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [confirmPassword, setConfirmPassword] = useState<string>('')
-
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const navigate = useNavigate()
-
   const { errors, setError, getErrorMessage, removeError} = useErrors();
 
-  function handleBackToLoginButtonClick() {
-    navigate('/login')
-  }
+  // Verify if all input fields is fullfilled
+  const isButtonDisabled = (errors.length > 0 || !email || !firstName || !lastName || !password || !confirmPassword) ;
+
+  console.log(errors)
 
   function handleShowPasswordButtonClick() {
     setShowPassword(prevState => !prevState)
@@ -62,6 +61,24 @@ export default function SignUp() {
         break;
       default:
         break;
+    }
+  }
+
+  function passwordsMatches() {
+    return password === confirmPassword ? true : false
+  }
+
+  function handleBackToLoginButtonClick() {
+    navigate('/login')
+  }
+
+  function handleCreateAccountButtonClick(event: React.FormEvent<HTMLInputElement>) {
+    event.preventDefault()
+    const isPasswordValid = passwordsMatches()
+    if (!isPasswordValid) {
+      return setError({ field: 'password', message: 'As senhas não coincidem'})
+    } else {
+      console.log('Create account')
     }
   }
 
@@ -106,25 +123,33 @@ export default function SignUp() {
           />
         </FormGroup>
 
-        <FormGroup>
+        <FormGroup errorMsg={getErrorMessage('password')}>
           <label>Senha*</label>
           <Input
             value={password}
             placeholder='*****'
             type={showPassword ? 'text' : 'password'}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              removeError('password')
+              setPassword(e.target.value)
+            }}
+            error={getErrorMessage('password')}
           />
           <Eye className='show-password' size={16} color='#fff' onClick={handleShowPasswordButtonClick} />
 
         </FormGroup>
 
-        <FormGroup>
+        <FormGroup errorMsg={getErrorMessage('password')}>
           <label>Confirme a senha*</label>
           <Input
             value={confirmPassword}
             placeholder='*****'
             type={showPassword ? 'text' : 'password'}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => {
+              removeError('password')
+              setConfirmPassword(e.target.value)
+            }}
+            error={getErrorMessage('password')}
           />
           <Eye className='show-password' size={16} color='#fff' onClick={handleShowPasswordButtonClick} />
         </FormGroup>
@@ -133,8 +158,9 @@ export default function SignUp() {
           <Button
             bgColor='#fff'
             color='#000000'
-            onClick={() => ''}
             text='Criar conta em aca.so'
+            onClick={handleCreateAccountButtonClick}
+            disabled={isButtonDisabled}
           />
 
           <Button

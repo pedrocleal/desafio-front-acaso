@@ -6,12 +6,14 @@ export interface IButtonProps {
   color: string,
   bgColor: string,
   onClick: any,
+  disabled?: boolean | any,
   // find a fix to onClick
 }
 
-export default function Button({ text, color, bgColor, onClick }: IButtonProps) {
+export default function Button({ text, color, bgColor, onClick, disabled }: IButtonProps) {
   return (
     <StyledButton
+      disabled={disabled}
       color={color}
       bgColor={bgColor}
       onClick={onClick}

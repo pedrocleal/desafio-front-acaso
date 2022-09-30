@@ -11,4 +11,14 @@ export const StyledButton = styled.button<IButtonProps>`
   cursor: pointer;
   color: ${({ color }) => color};
   background: ${({ bgColor }) => bgColor};
+  transition: all 0.3s ease-in;
+
+  &:hover {
+    background: #dddddd;
+  }
+
+  &:disabled {
+    background: #717177;
+    cursor: default;
+  }
 `
