@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import { IButtonProps } from ".";
 
-export const StyledButton = styled.button<{ color: string, bgColor: string}>`
+export const StyledButton = styled.button<IButtonProps>`
   width: 320px;
   height: 52px;
   border-radius: 30px;

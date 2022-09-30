@@ -1,6 +1,7 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { IInputProps } from ".";
 
-export const StyledInput = styled.input`
+export const StyledInput = styled.input<IInputProps>`
   width: 100%;
   padding: 16px 22px;
   outline: none;

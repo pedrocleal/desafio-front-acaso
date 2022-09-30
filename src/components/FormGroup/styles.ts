@@ -14,6 +14,10 @@ export const Container = styled.div`
   }
 
   span {
-    margin-top: 4px;
+    font-size: 12px;
+    display: block;
+    margin-left: 22px;
+    margin-top: 8px;
+    color: #e93f78;
   }
 `

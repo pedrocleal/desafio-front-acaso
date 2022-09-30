@@ -1,23 +1,25 @@
 import { ChangeEvent, HTMLInputTypeAttribute, ReactNode } from "react"
 import { StyledInput } from './styles'
 
-interface IInputProps {
+export interface IInputProps {
   type: HTMLInputTypeAttribute;
   placeholder: string;
   value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   children?: ReactNode;
+  error?: boolean;
 }
 
-export default function Input(props: IInputProps) {
+export default function Input({ type, placeholder, value, onChange, children, error}: IInputProps) {
   return (
     <StyledInput
-      value={props.value}
-      placeholder={props.placeholder}
-      onChange={props.onChange}
-      type={props.type}
+      value={value}
+      placeholder={placeholder}
+      onChange={onChange}
+      type={type}
+      error={error}
     >
-      {props.children}
+      {children}
     </StyledInput>
   )
 }
