@@ -5,7 +5,8 @@ export interface IButtonProps {
   text: string,
   color: string,
   bgColor: string,
-  onClick: (event: MouseEvent<HTMLButtonElement>) => void,
+  onClick: any,
+  // find a fix to onClick
 }
 
 export default function Button({ text, color, bgColor, onClick }: IButtonProps) {

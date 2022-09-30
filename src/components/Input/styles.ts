@@ -7,9 +7,15 @@ export const StyledInput = styled.input<IInputProps>`
   outline: none;
   border: none;
   background: #1E1F2F;
+  border: 2px solid #1E1F2F;
   border-radius: 6px;
   color: #fff;
   font-size: 16px;
+  transition: all 0.3s ease-in;
+
+  ${({ error }) => error && css`
+    border-color: #E93F78;
+  `}
 
   &::placeholder {
     color: #fff;

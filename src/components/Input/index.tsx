@@ -6,11 +6,10 @@ export interface IInputProps {
   placeholder: string;
   value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  children?: ReactNode;
   error?: boolean;
 }
 
-export default function Input({ type, placeholder, value, onChange, children, error}: IInputProps) {
+export default function Input({ type, placeholder, value, onChange, error}: IInputProps) {
   return (
     <StyledInput
       value={value}
@@ -18,8 +17,6 @@ export default function Input({ type, placeholder, value, onChange, children, er
       onChange={onChange}
       type={type}
       error={error}
-    >
-      {children}
-    </StyledInput>
+    />
   )
 }
