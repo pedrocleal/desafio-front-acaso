@@ -75,10 +75,9 @@ export default function SignUp() {
   function handleCreateAccountButtonClick(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault()
     const isPasswordValid = passwordsMatches()
+
     if (!isPasswordValid) {
       return setError({ field: 'password', message: 'As senhas não coincidem'})
-    } else {
-      console.log('Create account')
     }
   }
 
