@@ -7,4 +7,9 @@ export default createGlobalStyle`
     box-sizing: border-box;
     font-family: 'Raleway', sans-serif;
   }
+
+  body {
+    background: #030446;
+    font-size: 16px;
+  }
 `

@@ -1,6 +1,14 @@
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 
-export default function Home() {
+interface IHomeProps {
+  user: object | null
+}
+
+export default function Home({ user }: IHomeProps) {
+  if (!user) {
+    return <Navigate to={'/login'} replace/>
+  }
+
   return (
     <>
       <h1>Home</h1>
