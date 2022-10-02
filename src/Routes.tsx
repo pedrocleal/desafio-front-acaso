@@ -19,7 +19,7 @@ export default function AppRoutes() {
       <Route path='/' element={isAuth ? <HomePage user={user}/> : <LoginPage />}/>
       <Route path='/login' element={<LoginPage />}/>
       <Route path='/sign-up' element={<SignUpPage />} />
-      <Route path='/sign-up/confirm-email' element={< ConfirmEmailPage/>}/>
+      <Route path='/sign-up/confirm-sign-up' element={< ConfirmEmailPage/>}/>
     </Routes>
   )
 }

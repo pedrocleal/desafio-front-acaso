@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Container, SignUpFormContainer } from './styles';
 import { useNavigate } from 'react-router-dom';
 import useErrors from '../../hooks/useErrors';
-
 import { Eye } from 'phosphor-react';
-
 import logo from '../../assets/logo-acaso.svg';
 import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import { signUp } from '../../api';
+import { toast } from 'react-hot-toast'
 
 export default function SignUp() {
   const [email, setEmail] = useState<string>('')
@@ -24,8 +24,6 @@ export default function SignUp() {
   // Verify if all input fields is fullfilled
   const isButtonDisabled = (errors.length > 0 || !email || !firstName || !lastName || !password || !confirmPassword) ;
 
-  console.log(errors)
-
   function handleShowPasswordButtonClick() {
     setShowPassword(prevState => !prevState)
   }
@@ -33,30 +31,30 @@ export default function SignUp() {
   function handleFormInputChange(field: string, e: React.FormEvent<HTMLInputElement>) {
     switch (field) {
       case 'firstName':
-        setFirstName(e.currentTarget.value)
+        setFirstName(e.currentTarget.value);
 
         if (!e.currentTarget.value) {
-          return setError({ field: 'firstName', message: 'Campo obrigatório'})
+          return setError({ field: 'firstName', message: 'Campo obrigatório'});
         } else {
-          removeError('firstName')
+          removeError('firstName');
         }
         break;
       case 'lastName':
-        setLastName(e.currentTarget.value)
+        setLastName(e.currentTarget.value);
 
         if (!e.currentTarget.value) {
-          return setError({ field: 'lastName', message: 'Campo obrigatório'})
+          return setError({ field: 'lastName', message: 'Campo obrigatório'});
         } else {
-          removeError('lastName')
+          removeError('lastName');
         }
         break;
       case 'email':
-        setEmail(e.currentTarget.value)
+        setEmail(e.currentTarget.value);
 
         if (!e.currentTarget.value) {
-          return setError({ field: 'email', message: 'Campo obrigatório'})
+          return setError({ field: 'email', message: 'Campo obrigatório'});
         } else {
-          removeError('email')
+          removeError('email');
         }
         break;
       default:
@@ -65,19 +63,36 @@ export default function SignUp() {
   }
 
   function passwordsMatches() {
-    return password === confirmPassword ? true : false
+    return password === confirmPassword ? true : false;
   }
 
   function handleBackToLoginButtonClick() {
-    navigate('/login')
+    navigate('/login');
   }
 
-  function handleCreateAccountButtonClick(event: React.FormEvent<HTMLInputElement>) {
-    event.preventDefault()
-    const isPasswordValid = passwordsMatches()
+  async function handleCreateAccountButtonClick(event: React.FormEvent<HTMLInputElement>) {
+    event.preventDefault();
+    const isPasswordValid = passwordsMatches();
 
     if (!isPasswordValid) {
-      return setError({ field: 'password', message: 'As senhas não coincidem'})
+      return setError({ field: 'password', message: 'As senhas não coincidem'});
+    }
+
+    const data = {
+      email: email,
+      first_name: firstName,
+      last_name: lastName,
+      password: password
+    };
+
+    try {
+      const response = await signUp(data);
+      localStorage.setItem('user-id', JSON.stringify(response))
+      // console.log('caminho fleiz');|
+      navigate('/sign-up/confirm-sign-up/');
+    } catch(error: any) {
+      console.log(error);
+      toast.error(error.response.data.message || error.response.data.detail && 'Erro nos campos do formulário, tente novamente!');
     }
   }
 
