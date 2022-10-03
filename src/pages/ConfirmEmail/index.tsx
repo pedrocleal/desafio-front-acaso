@@ -6,8 +6,9 @@ import Input from "../../components/Input"
 import logo from '../../assets/logo-acaso.svg';
 import useErrors from "../../hooks/useErrors";
 import delay from "../../utils/delay";
-import { sendCodeAgain } from "../../api";
+import { confirmSignUp, sendCodeAgain } from "../../api";
 import { toast } from 'react-hot-toast'
+import { useNavigate } from "react-router-dom";
 
 const TIMEOUT = 120000
 
@@ -17,7 +18,9 @@ export default function ConfirmEmail() {
   const [countdown, setCountdown] = useState<number>(TIMEOUT);
 
   const { setError, removeError, getErrorMessage } = useErrors();
-  const userEmail = JSON.parse(localStorage.getItem('user-info') || '{}')?.email;
+  const userEmail = JSON.parse(localStorage.getItem('user-email') || '{}');
+
+  const navigate = useNavigate()
 
   function formatMiliseconds(ms: number) {
     const minutes = (ms / 60000) % 60;
@@ -50,7 +53,17 @@ export default function ConfirmEmail() {
   }
 
   async function handleConfirmEmailButtonClick(event: React.FormEvent<HTMLInputElement>) {
+    event.preventDefault();
 
+    try {
+      const response = await confirmSignUp(userEmail, code)
+      console.log(response)
+    } catch (error: any) {
+      return toast.error(error.response.data.message)
+    }
+
+    await delay(1000);
+    navigate('/login');
   }
 
   return (
@@ -75,7 +88,7 @@ export default function ConfirmEmail() {
           bgColor='#fff'
           color='#000000'
           text='Confirmar e-mail'
-          onClick={() => ''}
+          onClick={handleConfirmEmailButtonClick}
           disabled={!code || isSendAgainRequested}
         />
 
