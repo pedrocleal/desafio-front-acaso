@@ -28,25 +28,25 @@ export default function ConfirmEmail() {
 
   useEffect(() => {
     if (isSendAgainRequested) {
-      const timer:any = countdown > 0 && setInterval(() => setCountdown((prevState) => prevState - 1), 1000)
-      return () => clearInterval(timer)
+      const timer:any = countdown > 0 && setInterval(() => setCountdown((prevState) => prevState - 1), 1000);
+      return () => clearInterval(timer);
     }
-  }, [countdown, isSendAgainRequested])
+  }, [countdown, isSendAgainRequested]);
 
   async function handleSendCodeAgainButtonClick(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault();
 
     try {
       const response = await sendCodeAgain(userEmail);
-      console.log(response)
+      console.log(response);
     } catch (error: any) {
-      console.log(error.response.data.detail)
+      console.log(error.response.data.detail);
       // toast.error(error?.response?.data.detail || null)
     }
 
-    setIsSendAgainRequested(true)
-    await delay(5000)
-    setIsSendAgainRequested(false)
+    setIsSendAgainRequested(true);
+    await delay(5000);
+    setIsSendAgainRequested(false);
   }
 
   async function handleConfirmEmailButtonClick(event: React.FormEvent<HTMLInputElement>) {
