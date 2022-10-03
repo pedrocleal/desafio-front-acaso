@@ -88,7 +88,7 @@ export default function SignUp() {
     try {
       const response = await signUp(data);
       localStorage.setItem('user-id', JSON.stringify(response));
-      localStorage.setItem('user-info', JSON.stringify(data));
+      localStorage.setItem('user-email', JSON.stringify(data.email));
       // console.log('caminho fleiz');|
       navigate('/sign-up/confirm-sign-up/');
     } catch(error: any) {
