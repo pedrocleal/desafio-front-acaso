@@ -7,12 +7,22 @@ import HomePage from "./pages/Home"
 import LoginPage from "./pages/Login"
 import SignUpPage from "./pages/SignUp"
 
-export default function AppRoutes() {
-  const { user } = useContext(AuthContext)
+const PrivateRoute = () => {
+  const { isAuth } = useContext(AuthContext)
+
+  if (!isAuth) {
+    return <Navigate to='/login' />
+  }
 
   return (
+    <HomePage />
+  )
+}
+
+export default function AppRoutes() {
+  return (
     <Routes>
-      <Route path='/' element={<HomePage user={user}/>}/>
+      <Route path='/' element={<PrivateRoute />}/>
       <Route path='/login' element={<LoginPage />}/>
       <Route path='/sign-up' element={<SignUpPage />} />
       <Route path='/sign-up/confirm-sign-up' element={< ConfirmEmailPage/>}/>

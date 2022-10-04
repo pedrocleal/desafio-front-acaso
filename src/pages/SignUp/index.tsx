@@ -7,8 +7,8 @@ import logo from '../../assets/logo-acaso.svg';
 import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { signUp } from '../../api';
-import { toast } from 'react-hot-toast'
+import { createUser, signUp } from '../../api';
+import { toast } from 'react-hot-toast';
 
 export default function SignUp() {
   const [email, setEmail] = useState<string>('')
@@ -77,6 +77,7 @@ export default function SignUp() {
     const isPasswordValid = passwordsMatches();
 
     if (!isPasswordValid) {
+      setIsLoading(false);
       return setError({ field: 'password', message: 'As senhas não coincidem'});
     }
 
@@ -88,10 +89,9 @@ export default function SignUp() {
     };
 
     try {
-      const response = await signUp(data);
-      localStorage.setItem('user-id', JSON.stringify(response.data));
+      const signUpResponse = await signUp(data);
+      localStorage.setItem('user-id', JSON.stringify(signUpResponse.data));
       localStorage.setItem('user-email', JSON.stringify(data.email));
-      // console.log('caminho fleiz');|
       navigate('/sign-up/confirm-sign-up/');
     } catch(error: any) {
       console.log(error);

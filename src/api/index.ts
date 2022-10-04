@@ -25,3 +25,22 @@ export async function login(userEmail: string, password: string) {
   const response = await axios.post(`${API_URL}/auth/login`, { email: userEmail, password: password });
   return response;
 }
+
+// Retorna um erro de autorização ERR.1.0021
+export async function getUserById(id: string, token: string) {
+  const response = await axios.get(`${API_URL}/user/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  return response;
+}
+
+export async function createUser(data: object, token: string) {
+  const response = await axios.post(`${API_URL}/user`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return response;
+}

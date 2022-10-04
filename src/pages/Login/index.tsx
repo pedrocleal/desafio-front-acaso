@@ -9,9 +9,10 @@ import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import useErrors from '../../hooks/useErrors';
-import { login } from '../../api';
+import { createUser, login } from '../../api';
 import { toast } from 'react-hot-toast'
 import { AuthContext } from '../../contexts/AuthContext';
+import delay from '../../utils/delay';
 
 export default function Login() {
   const [email, setEmail] = useState<string>('');
@@ -41,19 +42,22 @@ export default function Login() {
 
   async function handleLoginButtonClick(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const { data } = await login(email, password);
-      console.log(data);
       localStorage.setItem('access_token', JSON.stringify(data.token.access_token));
       localStorage.setItem('refresh_token', JSON.stringify(data.token.refresh_token));
+      localStorage.setItem('id_token', JSON.stringify(data.token.id_token));
       localStorage.setItem('logged_user', JSON.stringify(data.user));
       setUser(data.user);
+      await delay(1000)
+      // a requisição é concluida com sucesso porém quando eu tento logar normalmente me retorna um erro dizendo que "User is already created"
+      // const createUserResponse = await createUser({}, data.token.id_token);
       navigate('/');
     } catch (error: any) {
-      toast.error('Erro ao tentar acessar aca.so, verifique os campos e tente novamente!');
+      toast.error('Ocorreu um erro ao tentar entrar em aca.so, verifique os campos e tente novamente!');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
