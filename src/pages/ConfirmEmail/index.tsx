@@ -18,16 +18,15 @@ export default function ConfirmEmail() {
   const [countdown, setCountdown] = useState<number>(TIMEOUT);
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const { setError, removeError, getErrorMessage } = useErrors();
   const userEmail = JSON.parse(localStorage.getItem('user-email') || '{}');
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function formatMiliseconds(ms: number) {
     const minutes = (ms / 60000) % 60;
     const seconds = (ms / 1000) % 60;
 
-    return `${Math.floor(minutes)}:${Math.floor(seconds)}`
+    return `${Math.floor(minutes)}:${Math.floor(seconds)}`;
   }
 
   useEffect(() => {
@@ -49,21 +48,21 @@ export default function ConfirmEmail() {
     }
 
     setIsSendAgainRequested(true);
-    await delay(5000);
+    await delay(120000);
     setIsSendAgainRequested(false);
   }
 
   async function handleConfirmEmailButtonClick(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
-      const response = await confirmSignUp(userEmail, code)
-      console.log(response)
+      const response = await confirmSignUp(userEmail, code);
+      console.log(response);
     } catch (error: any) {
-      return toast.error(error.response.data.message)
+      return toast.error(error.response.data.message);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
 
     navigate('/login');
@@ -75,14 +74,13 @@ export default function ConfirmEmail() {
     <h3>Cadastro</h3>
 
     <ConfirmEmailFormContainer>
-      <FormGroup errorMsg={getErrorMessage('firstName')}>
+      <FormGroup>
         <label>Código*</label>
         <Input
           value={code}
           placeholder='Insira aqui o código'
           type='text'
           onChange={(event) => setCode(event.currentTarget.value)}
-          error={getErrorMessage('firstName')}
           disabled={isSendAgainRequested}
         />
       </FormGroup>

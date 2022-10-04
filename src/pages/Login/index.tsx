@@ -18,7 +18,7 @@ export default function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ export default function Login() {
       localStorage.setItem('id_token', JSON.stringify(data.token.id_token));
       localStorage.setItem('logged_user', JSON.stringify(data.user));
       setUser(data.user);
-      await delay(1000)
+      await delay(1000);
       // a requisição é concluida com sucesso porém quando eu tento logar normalmente me retorna um erro dizendo que "User is already created"
       // const createUserResponse = await createUser({}, data.token.id_token);
       navigate('/');

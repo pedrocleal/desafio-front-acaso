@@ -11,10 +11,10 @@ import { createUser, signUp } from '../../api';
 import { toast } from 'react-hot-toast';
 
 export default function SignUp() {
-  const [email, setEmail] = useState<string>('')
-  const [firstName, setFirstName] = useState<string>('')
-  const [lastName, setLastName] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [email, setEmail] = useState<string>('');
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -26,7 +26,7 @@ export default function SignUp() {
   const isButtonDisabled = (errors.length > 0 || !email || !firstName || !lastName || !password || !confirmPassword) ;
 
   function handleShowPasswordButtonClick() {
-    setShowPassword(prevState => !prevState)
+    setShowPassword(prevState => !prevState);
   }
 
   function handleFormInputChange(field: string, e: React.FormEvent<HTMLInputElement>) {
@@ -97,7 +97,7 @@ export default function SignUp() {
       console.log(error);
       toast.error(error.response.data.message || error.response.data.detail && 'Erro nos campos do formulário, tente novamente!');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
