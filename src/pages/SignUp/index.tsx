@@ -17,6 +17,7 @@ export default function SignUp() {
   const [password, setPassword] = useState<string>('')
   const [confirmPassword, setConfirmPassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navigate = useNavigate()
   const { errors, setError, getErrorMessage, removeError} = useErrors();
@@ -72,6 +73,7 @@ export default function SignUp() {
 
   async function handleCreateAccountButtonClick(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault();
+    setIsLoading(true);
     const isPasswordValid = passwordsMatches();
 
     if (!isPasswordValid) {
@@ -87,13 +89,15 @@ export default function SignUp() {
 
     try {
       const response = await signUp(data);
-      localStorage.setItem('user-id', JSON.stringify(response));
+      localStorage.setItem('user-id', JSON.stringify(response.data));
       localStorage.setItem('user-email', JSON.stringify(data.email));
       // console.log('caminho fleiz');|
       navigate('/sign-up/confirm-sign-up/');
     } catch(error: any) {
       console.log(error);
       toast.error(error.response.data.message || error.response.data.detail && 'Erro nos campos do formulário, tente novamente!');
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -176,6 +180,7 @@ export default function SignUp() {
             text='Criar conta em aca.so'
             onClick={handleCreateAccountButtonClick}
             disabled={isButtonDisabled}
+            isLoading={isLoading}
           />
 
           <Button

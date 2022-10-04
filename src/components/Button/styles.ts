@@ -2,6 +2,10 @@ import styled from "styled-components";
 import { IButtonProps } from ".";
 
 export const StyledButton = styled.button<IButtonProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   width: 320px;
   height: 52px;
   border-radius: 30px;

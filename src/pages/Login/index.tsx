@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Container, LoginFormContainer } from './styles';
 
 import { Eye } from 'phosphor-react';
@@ -9,39 +9,57 @@ import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import useErrors from '../../hooks/useErrors';
+import { login } from '../../api';
+import { toast } from 'react-hot-toast'
+import { AuthContext } from '../../contexts/AuthContext';
 
 export default function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const navigate = useNavigate();
 
+  const { setUser } = useContext(AuthContext);
+
   function handleShowPasswordClick() {
-    setShowPassword(prevState => !prevState)
+    setShowPassword(prevState => !prevState);
   }
 
-  const { errors, setError, getErrorMessage, removeError} = useErrors();
+  const { setError, getErrorMessage, removeError} = useErrors();
 
   function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setEmail(e.target.value)
+    setEmail(e.target.value);
 
     if (!e.target.value) {
-      setError({ field: 'email', message: 'E-mail é obrigatório'})
+      setError({ field: 'email', message: 'E-mail é obrigatório'});
     } else {
-      removeError('email')
+      removeError('email');
     }
   }
 
-  function handleLoginButtonClick(e: React.FormEvent<HTMLFormElement>) {
+  async function handleLoginButtonClick(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log('Login Request')
+    setIsLoading(true)
+    try {
+      const { data } = await login(email, password);
+      console.log(data);
+      localStorage.setItem('access_token', JSON.stringify(data.token.access_token));
+      localStorage.setItem('refresh_token', JSON.stringify(data.token.refresh_token));
+      localStorage.setItem('logged_user', JSON.stringify(data.user));
+      setUser(data.user);
+      navigate('/');
+    } catch (error: any) {
+      toast.error('Erro ao tentar acessar aca.so, verifique os campos e tente novamente!');
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   function handleCreateAccountButtonClick(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log('Redirect to /sign-up')
-    navigate('/sign-up')
+    navigate('/sign-up');
   }
 
   return (
@@ -77,6 +95,8 @@ export default function Login() {
           bgColor='#fff'
           color='#000004'
           onClick={handleLoginButtonClick}
+          disabled={!email || !password}
+          isLoading={isLoading}
         />
 
         <div className='create-new-account-box'>

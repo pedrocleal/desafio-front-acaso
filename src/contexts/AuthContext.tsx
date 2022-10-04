@@ -1,23 +1,28 @@
-import { createContext, ReactNode, useState } from 'react'
+import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react'
 
 interface IAuthContext {
-  isAuth: boolean;
-  setIsAuth: () => void;
+  user: object | null;
+  setUser: Dispatch<SetStateAction<IUser | null>>;
 }
-
-const AuthContext = createContext({} as IAuthContext);
 
 interface AuthContextProviderProps {
   children: ReactNode;
 }
 
-export default function AuthProvider({ children }: AuthContextProviderProps) {
-  const [isAuth, setIsAuth] = useState()
+interface IUser {
+  id: string,
+  name: string,
+  last_name: string,
+  email: string,
+}
 
-  const contextValues = { isAuth, setIsAuth }
+export const AuthContext = createContext({} as IAuthContext);
+
+export default function AuthProvider({ children }: AuthContextProviderProps) {
+  const [user, setUser] = useState<IUser | null>(null);
 
   return (
-    <AuthContext.Provider value={ contextValues }
+    <AuthContext.Provider value={{ user, setUser }}
     >
       {children}
     </AuthContext.Provider>

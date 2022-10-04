@@ -16,6 +16,7 @@ export default function ConfirmEmail() {
   const [code, setCode] = useState<string>('');
   const [isSendAgainRequested, setIsSendAgainRequested] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(TIMEOUT);
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const { setError, removeError, getErrorMessage } = useErrors();
   const userEmail = JSON.parse(localStorage.getItem('user-email') || '{}');
@@ -54,15 +55,17 @@ export default function ConfirmEmail() {
 
   async function handleConfirmEmailButtonClick(event: React.FormEvent<HTMLInputElement>) {
     event.preventDefault();
+    setIsLoading(true)
 
     try {
       const response = await confirmSignUp(userEmail, code)
       console.log(response)
     } catch (error: any) {
       return toast.error(error.response.data.message)
+    } finally {
+      setIsLoading(false)
     }
 
-    await delay(1000);
     navigate('/login');
   }
 
@@ -90,6 +93,7 @@ export default function ConfirmEmail() {
           text='Confirmar e-mail'
           onClick={handleConfirmEmailButtonClick}
           disabled={!code || isSendAgainRequested}
+          isLoading={isLoading}
         />
 
         <p>Não recebeu o código?</p>
