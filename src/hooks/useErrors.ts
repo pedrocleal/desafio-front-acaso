@@ -23,8 +23,8 @@ export default function useErrors() {
 
   function getErrorMessage(fieldname: string) {
     const item: any = errors.find((error: IErrorsProps) => error.field === fieldname);
-    return item?.message
+    return item?.message;
   }
 
-  return { errors, setError, removeError, getErrorMessage }
+  return { errors, setError, removeError, getErrorMessage };
 }

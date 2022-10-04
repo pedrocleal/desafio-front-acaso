@@ -2,7 +2,7 @@ import { ReactNode } from "react"
 import { Container } from "./styles"
 
 interface IFormGroupProps {
-  children: ReactNode
+  children: ReactNode,
   errorMsg?: string
 }
 

@@ -3,7 +3,8 @@ import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState
 interface IAuthContext {
   user: IUser | null,
   setUser: Dispatch<SetStateAction<IUser | null>>;
-  isAuth: boolean,
+  isAuthenticated: boolean,
+  isLoading: boolean,
 }
 
 interface AuthContextProviderProps {
@@ -22,31 +23,25 @@ export const AuthContext = createContext({} as IAuthContext);
 
 export default function AuthProvider({ children }: AuthContextProviderProps) {
   const [user, setUser] = useState<IUser | null>(null);
-  const [isAuth, setIsAuth] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const isAuthenticated = !!user;
   const token = localStorage.getItem('access_token');
-  const loggedUser = JSON.parse(localStorage.getItem('logged_user') || '{}')
+  const loggedUser = JSON.parse(localStorage.getItem('logged_user') || '{}');
 
-  console.log(user);
+  console.log({user, isAuthenticated});
 
   useEffect(() => {
-    (async () => {
+    (() => {
       if (token) {
-        setIsAuth(true)
         setUser(loggedUser);
-
-        // Essa requisição me retorna um erro de autorização ERR.1.0021
-        // try {
-        //   const response = await getUserById(user.id, token);
-        //   console.log(response)
-        // } catch (error) {
-        //   console.log(error)
-        // }
       }
+
+      setIsLoading(false);
     })();
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, setUser, isAuth }}>
+    <AuthContext.Provider value={{ user, setUser, isAuthenticated, isLoading }}>
       {children}
     </AuthContext.Provider>
   )

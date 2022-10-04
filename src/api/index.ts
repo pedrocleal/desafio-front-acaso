@@ -32,7 +32,7 @@ export async function getUserById(id: string, token: string) {
     headers: {
       Authorization: `Bearer ${token}`
     }
-  })
+  });
   return response;
 }
 

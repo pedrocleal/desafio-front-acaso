@@ -20,7 +20,7 @@ export default function Button({ text, color, bgColor, onClick, disabled, isLoad
       onClick={onClick}
       text={text}
     >
-      {isLoading ? <Spinner size={24} /> : text}
+      {isLoading ? <Spinner size={24} /> : text};
     </StyledButton>
   )
 }
