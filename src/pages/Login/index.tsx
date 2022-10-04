@@ -1,9 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Container, LoginFormContainer } from './styles';
-
 import { Eye } from 'phosphor-react';
-
 import logo from '../../assets/logo-acaso.svg';
 import FormGroup from '../../components/FormGroup';
 import Input from '../../components/Input';
@@ -19,16 +17,14 @@ export default function Login() {
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const navigate = useNavigate();
-
   const { setUser } = useContext(AuthContext);
+  const { setError, getErrorMessage, removeError} = useErrors();
 
   function handleShowPasswordClick() {
     setShowPassword(prevState => !prevState);
   }
 
-  const { setError, getErrorMessage, removeError} = useErrors();
 
   function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
     setEmail(e.target.value);
@@ -51,8 +47,10 @@ export default function Login() {
       localStorage.setItem('logged_user', JSON.stringify(data.user));
       setUser(data.user);
       await delay(1000);
-      // a requisição é concluida com sucesso porém quando eu tento logar normalmente me retorna um erro dizendo que "User is already created"
+
       // const createUserResponse = await createUser({}, data.token.id_token);
+      // a requisição é concluida com sucesso porém quando eu tento logar normalmente me retorna um erro dizendo que "User is already created"
+
       navigate('/');
     } catch (error: any) {
       toast.error('Ocorreu um erro ao tentar entrar em aca.so, verifique os campos e tente novamente!');
