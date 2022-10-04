@@ -7,6 +7,7 @@ export interface IInputProps {
   value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   error?: boolean;
+  disabled?: boolean;
 }
 
 export default function Input({ type, placeholder, value, onChange, error}: IInputProps) {

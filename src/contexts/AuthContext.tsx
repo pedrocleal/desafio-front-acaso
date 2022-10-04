@@ -1,24 +1,47 @@
-import { createContext, ReactNode, useState } from 'react'
+import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 
 interface IAuthContext {
-  isAuth: boolean;
-  setIsAuth: () => void;
+  user: IUser | null,
+  setUser: Dispatch<SetStateAction<IUser | null>>;
+  isAuthenticated: boolean,
+  isLoading: boolean,
 }
-
-const AuthContext = createContext({} as IAuthContext);
 
 interface AuthContextProviderProps {
   children: ReactNode;
 }
 
-export default function AuthProvider({ children }: AuthContextProviderProps) {
-  const [isAuth, setIsAuth] = useState()
+interface IUser {
+  id: string,
+  name: string,
+  first_name: string,
+  last_name: string,
+  email: string,
+}
 
-  const contextValues = { isAuth, setIsAuth }
+export const AuthContext = createContext({} as IAuthContext);
+
+export default function AuthProvider({ children }: AuthContextProviderProps) {
+  const [user, setUser] = useState<IUser | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const isAuthenticated = !!user;
+  const token = localStorage.getItem('access_token');
+  const loggedUser = JSON.parse(localStorage.getItem('logged_user') || '{}');
+
+  console.log({user, isAuthenticated});
+
+  useEffect(() => {
+    (() => {
+      if (token) {
+        setUser(loggedUser);
+      }
+
+      setIsLoading(false);
+    })();
+  }, [])
 
   return (
-    <AuthContext.Provider value={ contextValues }
-    >
+    <AuthContext.Provider value={{ user, setUser, isAuthenticated, isLoading }}>
       {children}
     </AuthContext.Provider>
   )
